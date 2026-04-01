@@ -1,0 +1,20 @@
+# Environment & secrets
+backend/.env
+
+# Large files — regenerated on server
+backend/ufc_model.joblib
+backend/fighters.joblib
+backend/data/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
+frontend/node_modules/
+frontend/build/
+
+# OS
+.DS_Store
+Thumbs.db
