@@ -1,5 +1,6 @@
 # Environment & secrets
 backend/.env
+.env
 
 # Large files — regenerated on server
 backend/ufc_model.joblib
