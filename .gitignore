@@ -3,8 +3,7 @@ backend/.env
 .env
 
 # Large files — regenerated on server
-backend/ufc_model.joblib
-backend/fighters.joblib
+
 backend/data/
 
 # Python cache
