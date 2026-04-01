@@ -1,7 +1,7 @@
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis,
   ResponsiveContainer, Tooltip,
-  BarChart, Bar, XAxis, YAxis, Cell, CartesianGrid,
+  BarChart, Bar, XAxis, YAxis,CartesianGrid,
 } from "recharts";
 
 export default function PredictionResult({ prediction }) {
