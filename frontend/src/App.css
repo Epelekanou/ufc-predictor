@@ -29,7 +29,7 @@ body {
 .header {
   position: relative;
   overflow: hidden;
-  padding: 3rem 1rem 2.5rem;
+  padding: 2rem 1rem 1.75rem;
   text-align: center;
   border-bottom: 1px solid var(--border);
 }
@@ -43,10 +43,10 @@ body {
     linear-gradient(180deg, #0d1020 0%, #080a10 100%);
 }
 .header-inner { position: relative; max-width: 700px; margin: 0 auto; }
-.header-icon  { font-size: 2.8rem; display: block; margin-bottom: 0.75rem; filter: drop-shadow(0 0 20px rgba(255,200,74,0.4)); }
+.header-icon  { font-size: 2rem; display: block; margin-bottom: 0.5rem; filter: drop-shadow(0 0 20px rgba(255,200,74,0.4)); }
 .header h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-size: clamp(2rem, 7vw, 5rem);
   letter-spacing: 0.06em;
   line-height: 1;
   background: linear-gradient(90deg, var(--red) 0%, #ffffff 45%, var(--blue) 100%);
@@ -54,27 +54,72 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.header-sub { color: var(--muted2); font-size: 0.8rem; margin-top: 0.6rem; letter-spacing: 0.04em; }
+.header-sub { color: var(--muted2); font-size: 0.75rem; margin-top: 0.4rem; letter-spacing: 0.04em; }
 
 /* ── Main ── */
-.main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+.main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 0.75rem 4rem; }
 
-/* ── VS Grid ── */
+/* ── VS Grid — DESKTOP ── */
 .vs-grid {
   display: grid;
-  grid-template-columns: 1fr 120px 1fr;
-  gap: 1rem;
+  grid-template-columns: 1fr 100px 1fr;
+  gap: 0.75rem;
   align-items: start;
 }
-@media (max-width: 700px) { .vs-grid { grid-template-columns: 1fr; } }
+
+/* ── VS Grid — MOBILE ── */
+@media (max-width: 700px) {
+  .vs-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.5rem;
+  }
+
+  /* Red corner: top-left */
+  .red-corner  { grid-column: 1; grid-row: 1; }
+
+  /* Blue corner: top-right */
+  .blue-corner { grid-column: 2; grid-row: 1; }
+
+  /* VS + buttons: full width below both corners */
+  .vs-center {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    gap: 0.6rem;
+  }
+
+  .vs-badge { font-size: 1.8rem; }
+
+  .predict-btn { width: auto; padding: 0.6rem 1.5rem; font-size: 1.1rem; }
+
+  /* Compact fighter cards on mobile */
+  .fighter-card { padding: 0.75rem; }
+  .fighter-name { font-size: 1.1rem; }
+  .fighter-avatar { width: 36px; height: 36px; font-size: 1rem; }
+  .stats-grid { grid-template-columns: 1fr; gap: 0.3rem; }
+  .stat-item { padding: 0.35rem 0.5rem; }
+  .stat-label { font-size: 0.55rem; }
+  .stat-value { font-size: 0.8rem; }
+
+  /* Compact header on mobile */
+  .header { padding: 1.25rem 1rem 1rem; }
+
+  /* Result section */
+  .result-section, .analysis-section { padding: 1.25rem; }
+  .winner-name { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+}
 
 .corner-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .vs-center {
@@ -130,13 +175,13 @@ body {
   border: 1px solid var(--border);
   border-radius: 10px;
   color: var(--text);
-  font-size: 0.92rem;
-  padding: 0.7rem 1rem;
+  font-size: 0.88rem;
+  padding: 0.6rem 0.75rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .search-input:focus { border-color: var(--muted2); box-shadow: 0 0 0 3px rgba(90,106,138,0.15); }
-.search-input::placeholder { color: var(--muted); }
+.search-input::placeholder { color: var(--muted); font-size: 0.8rem; }
 
 .dropdown {
   position: absolute;
@@ -146,15 +191,15 @@ body {
   border: 1px solid var(--border);
   border-radius: 10px;
   list-style: none;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
   z-index: 100;
   box-shadow: 0 12px 40px rgba(0,0,0,0.6);
 }
 .dropdown-item {
-  padding: 0.6rem 1rem;
+  padding: 0.55rem 0.9rem;
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   color: var(--muted2);
   transition: background 0.1s, color 0.1s;
   border-bottom: 1px solid rgba(255,255,255,0.03);
@@ -167,10 +212,10 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 1.25rem;
-  margin-top: 0.75rem;
+  padding: 1rem;
+  margin-top: 0.6rem;
 }
-.fighter-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+.fighter-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
 .fighter-avatar {
   width: 48px; height: 48px;
   border-radius: 50%;
@@ -181,17 +226,17 @@ body {
 }
 .fighter-avatar.red-avatar  { background: var(--red-dim);  color: var(--red);  border: 1px solid rgba(255,61,61,0.3); }
 .fighter-avatar.blue-avatar { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(61,139,255,0.3); }
-.fighter-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: 0.05em; line-height: 1.1; }
-.weight-class { color: var(--muted); font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.85rem; }
+.fighter-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: 0.05em; line-height: 1.1; }
+.weight-class { color: var(--muted); font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.7rem; }
 
 .record-badge {
   display: inline-block;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1rem;
   letter-spacing: 0.05em;
-  padding: 0.18rem 0.65rem;
+  padding: 0.15rem 0.6rem;
   border-radius: 6px;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.7rem;
 }
 .red-corner  .record-badge { background: var(--red-dim);  color: var(--red); }
 .blue-corner .record-badge { background: var(--blue-dim); color: var(--blue); }
@@ -201,20 +246,20 @@ body {
   display: flex; flex-direction: column;
   background: var(--surface2);
   border-radius: 8px;
-  padding: 0.45rem 0.65rem;
+  padding: 0.4rem 0.6rem;
   border: 1px solid rgba(255,255,255,0.03);
 }
-.stat-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.12rem; }
-.stat-value { font-size: 0.88rem; font-weight: 600; }
-.stat-value.na { color: var(--muted); font-weight: 400; font-size: 0.78rem; }
+.stat-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.1rem; }
+.stat-value { font-size: 0.85rem; font-weight: 600; }
+.stat-value.na { color: var(--muted); font-weight: 400; font-size: 0.75rem; }
 
 /* ── Result Section ── */
 .result-section, .analysis-section {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 2rem;
-  margin-top: 2rem;
+  padding: 1.75rem;
+  margin-top: 1.5rem;
 }
 .result-title {
   font-family: 'Bebas Neue', sans-serif;
@@ -227,9 +272,9 @@ body {
 /* Winner banner */
 .winner-banner {
   display: flex; flex-direction: column; align-items: center;
-  padding: 1.75rem 1.5rem;
+  padding: 1.5rem 1rem;
   border-radius: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative; overflow: hidden;
 }
 .red-win  { background: var(--red-dim);  border: 1px solid rgba(255,61,61,0.25);  color: var(--red); }
@@ -245,7 +290,7 @@ body {
 /* Confidence bar */
 .confidence-wrap { margin-bottom: 0.5rem; }
 .conf-labels { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-.conf-name   { font-size: 0.78rem; font-weight: 600; }
+.conf-name   { font-size: 0.75rem; font-weight: 600; }
 .conf-pct    { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.05em; margin-left: 0.25rem; }
 
 .conf-bar-track {
@@ -257,7 +302,7 @@ body {
 .conf-center-label { text-align: center; font-size: 0.63rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.35rem; }
 
 /* Radar */
-.radar-wrap  { margin-top: 2rem; }
+.radar-wrap  { margin-top: 1.5rem; }
 .radar-title { font-size: 0.67rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
 .radar-legend { display: flex; justify-content: center; gap: 2rem; margin-top: 0.5rem; font-size: 0.82rem; color: var(--muted2); }
 .dot      { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
@@ -276,7 +321,7 @@ body {
   flex-shrink: 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.analysis-text p { color: #b0bdd4; line-height: 1.85; margin-bottom: 1rem; font-size: 0.92rem; }
+.analysis-text p { color: #b0bdd4; line-height: 1.85; margin-bottom: 1rem; font-size: 0.9rem; }
 .analysis-text p:last-child { margin-bottom: 0; }
 
 /* ── Error ── */
@@ -292,11 +337,11 @@ body {
 
 /* ── Stats sections in fighter card ── */
 .stats-section-label {
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
   padding-bottom: 0.2rem;
   border-bottom: 1px solid var(--border);
 }
@@ -306,9 +351,9 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
-@media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; gap: 1rem; } }
 
 /* ── Advantages grid ── */
 .advantages-grid {
@@ -317,14 +362,14 @@ body {
   gap: 1rem;
   margin-top: 1.5rem;
 }
-@media (max-width: 700px) { .advantages-grid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .advantages-grid { grid-template-columns: 1fr; gap: 0.75rem; } }
 
 .advantage-card {
   background: var(--surface2);
   border: 1px solid var(--border);
   border-left-width: 3px;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0.85rem;
 }
 .advantage-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
 .advantage-name  { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
