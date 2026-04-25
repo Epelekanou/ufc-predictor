@@ -1,6 +1,7 @@
 # 🥊 UFC Fight Predictor
 
 A full-stack machine learning web application that predicts UFC fight outcomes using real fighter statistics. Select any two fighters and get an ML-powered prediction with detailed stats comparison.
+->If its not working give it some time to start around 3-5 minutes.
 
 🔗 **Live Demo:** https://ufc-predictor-32k6.vercel.app/
 
