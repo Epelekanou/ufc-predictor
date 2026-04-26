@@ -478,4 +478,4 @@ def predict_fight(fighter_red: dict, fighter_blue: dict, model) -> dict:
 
 
 if __name__ == "__main__":
-    train(r"data\ufc-master.csv\data.csv")
+     train(r"data\combined_data.csv")
