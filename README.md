@@ -8,21 +8,16 @@ A full-stack machine learning web application that predicts UFC fight outcomes u
 
 ---
 
-## 📸 Preview
-
-> Pick any two UFC fighters → Get win probability + full stats breakdown + radar chart comparison
-
----
-
 ## 🧠 How It Works
 
-1. **Data Collection** — Custom parallel web scraper pulls live fighter stats from [ufcstats.com](http://www.ufcstats.com) (4,400+ fighters, ~10x faster than sequential scraping using ThreadPoolExecutor)
-2. **Feature Engineering** — Computes 25 differential features between fighters (reach advantage, strike accuracy gap, win rate difference, recent form, etc.)
-3. **ML Model** — Stacking Ensemble (Random Forest + Gradient Boosting + XGBoost + LightGBM) with Logistic Regression as the meta-learner
-4. **Hyperparameter Tuning** — XGBoost parameters auto-tuned using Optuna (30 trials)
-5. **Bias Removal** — Training data is flipped (red/blue corner swapped) to eliminate corner-position bias
-6. **Time-based Validation** — Trained on older fights, tested on recent ones for realistic evaluation
-7. **Prediction** — Returns win probability for each fighter based on 25 statistical features
+1. **Fighter Scraping** — Custom parallel scraper pulls live fighter stats from [ufcstats.com](http://www.ufcstats.com) (4,400+ fighters, 10 threads)
+2. **Fight Scraping** — Second scraper collects post-2021 fight results (217 events, 2,394 new fights) and merges with Kaggle dataset
+3. **Feature Engineering** — Computes 25 differential features between fighters (reach advantage, strike accuracy gap, win rate difference, recent form, etc.)
+4. **ML Model** — Stacking Ensemble (Random Forest + Gradient Boosting + XGBoost + LightGBM) with Logistic Regression meta-learner
+5. **Hyperparameter Tuning** — XGBoost parameters auto-tuned using Optuna (30 trials)
+6. **Bias Removal** — Training data is flipped (red/blue corner swapped) to eliminate corner-position bias
+7. **Time-based Validation** — Trained on older fights, tested on most recent year for realistic evaluation
+8. **Prediction** — Returns win probability for each fighter based on 25 statistical features
 
 ---
 
@@ -30,8 +25,12 @@ A full-stack machine learning web application that predicts UFC fight outcomes u
 
 ```
 ufcstats.com
-     ↓ (scraper_fast.py — parallel scraping, 10 threads)
+     ↓ (scraper_fast.py — parallel fighter scraping, 10 threads)
 fighters.joblib (4,475 fighters)
+
+ufcstats.com
+     ↓ (scrape_new_fights.py — 217 events, 2,394 fights post-2021)
+data/combined_data.csv (8,405 total fights)
      ↓
 FastAPI Backend ──→ Stacking Ensemble (RF + GBM + XGB + LGB → LR)
      ↓
@@ -75,10 +74,10 @@ React Frontend (Vercel) ←──→ Backend API (Render)
 ## 📊 ML Model Details
 
 - **Algorithm:** Stacking Ensemble — Random Forest + Gradient Boosting + XGBoost + LightGBM → Logistic Regression meta-learner
-- **Training data:** 6,012 UFC fights (Kaggle dataset, Kaggle + ufcstats.com)
-- **Accuracy:** ~62% (time-based validation — comparable to professional oddsmakers at 65–70%)
-- **ROC-AUC:** 0.663
-- **Validation strategy:** Time-based split (train on older fights, test on most recent year) — more realistic than random split
+- **Training data:** 8,405 UFC fights (Kaggle dataset 1994–2021 + custom scraped 2021–2026)
+- **Accuracy:** ~83.7% (time-based validation)
+- **ROC-AUC:** 0.915
+- **Validation strategy:** Time-based split (train on older fights, test on most recent year)
 - **Features used (25 total):**
   - Physical: age, reach, height, weight differentials
   - Record: win rate, win streak, total fights, finish rate
@@ -100,7 +99,9 @@ React Frontend (Vercel) ←──→ Backend API (Render)
 cd backend
 pip install -r requirements.txt
 pip install xgboost lightgbm optuna
-python model.py          # trains the model (~3-5 min)
+python scraper_fast.py       # scrape fighter profiles (~10 min)
+python scrape_new_fights.py  # scrape post-2021 fights (~30-40 min)
+python model.py              # train the model (~3-5 min)
 uvicorn main:app --reload
 ```
 
@@ -115,13 +116,13 @@ App runs at **http://localhost:3000**
 
 ---
 
-## 🕷️ Update Fighter Data
+## 🕷️ Update Fighter & Fight Data
 
-To refresh fighter stats from ufcstats.com:
 ```bash
 cd backend
-python scraper_fast.py   # ~10 minutes, parallel scraping
-python model.py          # retrain with fresh data
+python scraper_fast.py       # updates fighter profiles
+python scrape_new_fights.py  # scrapes latest fights
+python model.py              # retrains model with fresh data
 ```
 
 ---
@@ -131,16 +132,17 @@ python model.py          # retrain with fresh data
 ```
 ufc-predictor/
 ├── backend/
-│   ├── main.py              # FastAPI app & API routes
-│   ├── model.py             # ML training & prediction logic (stacking ensemble)
-│   ├── scraper_fast.py      # Parallel web scraper (ufcstats.com, 10 threads)
-│   ├── fighters.joblib      # Scraped fighter profiles (4,475 fighters)
-│   ├── ufc_model.joblib     # Trained stacking ensemble model
+│   ├── main.py                  # FastAPI app & API routes
+│   ├── model.py                 # ML training & prediction (stacking ensemble)
+│   ├── scraper_fast.py          # Parallel fighter scraper (4,475 fighters)
+│   ├── scrape_new_fights.py     # Fight scraper (2,394 post-2021 fights)
+│   ├── fighters.joblib          # Scraped fighter profiles
+│   ├── ufc_model.joblib         # Trained stacking ensemble model
 │   └── requirements.txt
 └── frontend/
     ├── src/
     │   ├── App.jsx
-    │   ├── App.css              # Dark theme, mobile-responsive
+    │   ├── App.css                  # Dark theme, mobile-responsive
     │   └── components/
     │       ├── FighterSelect.jsx    # Search & autocomplete
     │       ├── FighterCard.jsx      # Fighter stats display
@@ -171,4 +173,4 @@ ufc-predictor/
 ## 📄 Data Sources
 
 - Fight history: [Kaggle UFC Dataset](https://www.kaggle.com/datasets/rajeevw/ufcdata)
-- Live fighter stats: [UFC Stats](http://www.ufcstats.com)
+- Live fighter stats & new fights: [UFC Stats](http://www.ufcstats.com)
